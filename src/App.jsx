@@ -36,7 +36,7 @@ const problems = [
     icon: WalletCards,
     label: "Consumidor",
     eyebrow: "Produto, cobrança ou serviço",
-    accent: "#C8B6FF",
+    accent: "#0A2540",
     title: "Direito do Consumidor",
     short: "Cobrança indevida, produto com defeito, negativa da empresa ou serviço mal prestado.",
     diagnosis:
@@ -49,7 +49,7 @@ const problems = [
     icon: FileText,
     label: "Contratos",
     eyebrow: "Acordos descumpridos",
-    accent: "#D9C7A7",
+    accent: "#4B5563",
     title: "Responsabilidade Contratual",
     short: "Uma das partes não cumpriu aquilo que estava combinado.",
     diagnosis:
@@ -62,7 +62,7 @@ const problems = [
     icon: Home,
     label: "Imóveis",
     eyebrow: "Posse e regularização",
-    accent: "#BFD8C2",
+    accent: "#60758A",
     title: "Regularização de Imóveis",
     short: "Imóvel sem escritura, posse antiga ou documentação incompleta.",
     diagnosis:
@@ -75,7 +75,7 @@ const problems = [
     icon: ScrollText,
     label: "Inventário",
     eyebrow: "Bens e herdeiros",
-    accent: "#E8C7A1",
+    accent: "#8A7F70",
     title: "Inventários",
     short: "Transferência de bens após falecimento.",
     diagnosis:
@@ -88,7 +88,7 @@ const problems = [
     icon: Users,
     label: "Família",
     eyebrow: "Divórcio e partilha",
-    accent: "#E6B8C8",
+    accent: "#2F4054",
     title: "Divórcio e Partilha",
     short: "Separação, patrimônio e organização familiar.",
     diagnosis:
@@ -101,7 +101,7 @@ const problems = [
     icon: ShieldCheck,
     label: "BPC/LOAS",
     eyebrow: "Benefício assistencial",
-    accent: "#C7C6E8",
+    accent: "#6B7280",
     title: "BPC/LOAS",
     short: "Benefício para idoso ou pessoa com deficiência.",
     diagnosis:
@@ -130,24 +130,27 @@ function LiquidGlass({ children, className = "", light = false }) {
 function Header() {
   return (
     <header className="fixed left-0 top-0 z-50 w-full px-4 py-4">
-      <div className="mx-auto max-w-7xl rounded-full border border-white/14 bg-[#1A1428]/68 px-5 py-3 backdrop-blur-2xl">
+      <div className="mx-auto max-w-7xl rounded-full border border-[#0A2540]/10 bg-[#F7F6F2]/86 px-6 py-4 backdrop-blur-2xl">
         <div className="flex items-center justify-between gap-5">
-          <a href="#inicio">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.34em] text-white">Caio Carvalho</p>
-            <p className="mt-1 text-[11px] text-white/48">Advogado • OAB/RJ 262212</p>
+          <a href="#inicio" className="flex items-center">
+            <img
+              src="/images/logo-original.png"
+              alt="Caio Carvalho"
+              className="h-16 md:h-20 w-auto max-w-[340px] object-contain"
+            />
           </a>
 
           <nav className="hidden items-center gap-7 md:flex">
-            <a href="#atuacao" className="text-sm text-white/55 hover:text-white">Atuação</a>
-            <a href="#sobre" className="text-sm text-white/55 hover:text-white">Sobre</a>
-            <a href="#contato" className="text-sm text-white/55 hover:text-white">Contato</a>
+            <a href="#atuacao" className="text-sm text-[#0A2540]/58 hover:text-[#0A2540]">Atuação</a>
+            <a href="#sobre" className="text-sm text-[#0A2540]/58 hover:text-[#0A2540]">Sobre</a>
+            <a href="#contato" className="text-sm text-[#0A2540]/58 hover:text-[#0A2540]">Contato</a>
           </nav>
 
           <a
             href={makeWhatsappLink()}
             target="_blank"
             rel="noreferrer"
-            className="rounded-full bg-[#F5F1EA] px-5 py-2.5 text-sm font-semibold text-[#1A1428] transition hover:bg-white"
+            className="rounded-full bg-[#0A2540] px-5 py-2.5 text-sm font-semibold text-[#F7F6F2] transition hover:bg-[#071B30]"
           >
             WhatsApp
           </a>
@@ -165,7 +168,7 @@ function ProblemButton({ problem, active, onClick }) {
       onClick={onClick}
       className={`group rounded-[28px] border p-5 text-left backdrop-blur-2xl transition duration-300 ${
         active
-          ? "border-white/30 bg-[#F5F1EA] text-[#1A1428]"
+          ? "border-white/30 bg-[#F7F6F2] text-[#0A2540]"
           : "border-white/12 bg-white/[0.065] text-white hover:bg-white/[0.105]"
       }`}
     >
@@ -177,9 +180,9 @@ function ProblemButton({ problem, active, onClick }) {
           <Icon size={21} />
         </span>
         <div>
-          <p className={`text-[10px] font-semibold uppercase tracking-[0.22em] ${active ? "text-[#1A1428]/50" : "text-white/38"}`}>{problem.eyebrow}</p>
+          <p className={`text-[10px] font-semibold uppercase tracking-[0.22em] ${active ? "text-[#0A2540]/50" : "text-white/38"}`}>{problem.eyebrow}</p>
           <p className="mt-2 text-lg font-semibold tracking-tight">{problem.label}</p>
-          <p className={`mt-2 text-sm leading-6 ${active ? "text-[#1A1428]/66" : "text-white/50"}`}>{problem.short}</p>
+          <p className={`mt-2 text-sm leading-6 ${active ? "text-[#0A2540]/66" : "text-white/50"}`}>{problem.short}</p>
         </div>
       </div>
     </button>
@@ -233,7 +236,7 @@ function ConsultationPanel({ problem }) {
               href={makeWhatsappLink(problem.title)}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#F5F1EA] px-6 py-4 text-sm font-semibold text-[#1A1428] transition hover:bg-white"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#F7F6F2] px-6 py-4 text-sm font-semibold text-[#0A2540] transition hover:bg-white"
             >
               Iniciar análise <MessageCircle size={18} />
             </a>
@@ -255,8 +258,8 @@ function Hero() {
   const problem = useMemo(() => problems.find((p) => p.id === selected), [selected]);
 
   return (
-    <section id="inicio" className="relative min-h-screen overflow-hidden bg-[#1A1428] px-5 pt-28 text-white">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_22%_8%,rgba(200,182,255,0.22),transparent_34%),radial-gradient(circle_at_80%_22%,rgba(245,241,234,0.12),transparent_32%),linear-gradient(180deg,#1A1428_0%,#241C36_68%,#1A1428_100%)]" />
+    <section id="inicio" className="relative min-h-screen overflow-hidden bg-[#0A2540] px-5 pt-28 text-white">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_22%_8%,rgba(221,231,240,0.20),transparent_34%),radial-gradient(circle_at_80%_22%,rgba(247,246,242,0.12),transparent_32%),linear-gradient(180deg,#0A2540_0%,#12304D_68%,#0A2540_100%)]" />
       <div className="pointer-events-none absolute left-1/2 top-28 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-white/[0.055] blur-[120px]" />
 
       <Header />
@@ -292,7 +295,7 @@ function Hero() {
             <div className="grid gap-6 md:grid-cols-[0.9fr_1.1fr]">
               <LiquidGlass className="rounded-[38px] p-2">
                 <img
-                  src="/images/caio-close.png"
+                  src="/images/caio-full.png"
                   alt="Caio Carvalho dos Santos"
                   className="h-[390px] w-full rounded-[32px] object-cover object-center grayscale-[4%] contrast-105 saturate-[0.94]"
                 />
@@ -318,8 +321,8 @@ function Hero() {
 
 function About() {
   return (
-    <section id="sobre" className="relative overflow-hidden bg-[#F5F1EA] px-5 py-24 text-[#1A1428]">
-      <div className="pointer-events-none absolute -left-32 top-20 h-96 w-96 rounded-full bg-[#D8CCFF]/45 blur-[110px]" />
+    <section id="sobre" className="relative overflow-hidden bg-[#F7F6F2] px-5 py-24 text-[#0A2540]">
+      <div className="pointer-events-none absolute -left-32 top-20 h-96 w-96 rounded-full bg-[#DDE7F0]/45 blur-[110px]" />
       <div className="pointer-events-none absolute -right-32 bottom-20 h-96 w-96 rounded-full bg-white/80 blur-[110px]" />
 
       <div className="relative mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
@@ -344,11 +347,11 @@ function About() {
           viewport={{ once: true }}
           transition={{ duration: 0.55, delay: 0.1 }}
         >
-          <p className="text-xs font-semibold uppercase tracking-[0.34em] text-[#7A6F8E]">Quem analisa seu caso</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.34em] text-[#6B7280]">Quem analisa seu caso</p>
           <h2 className="mt-5 max-w-3xl font-serif text-5xl leading-tight tracking-tight md:text-7xl">
             Direto com o advogado. Sem juridiquês.
           </h2>
-          <div className="mt-8 max-w-2xl space-y-5 text-lg leading-8 text-[#5F566D]">
+          <div className="mt-8 max-w-2xl space-y-5 text-lg leading-8 text-[#4B5563]">
             <p>
               Caio Carvalho dos Santos é advogado inscrito na OAB/RJ sob nº 262212 e atua com foco em soluções jurídicas claras, acessíveis e estratégicas.
             </p>
@@ -364,8 +367,8 @@ function About() {
               "Atendimento direto",
             ].map((item) => (
               <LiquidGlass light key={item} className="rounded-[28px] p-5">
-                <CheckCircle2 size={20} className="text-[#6D5DFC]" />
-                <p className="mt-4 text-sm font-semibold leading-6 text-[#1A1428]">{item}</p>
+                <CheckCircle2 size={20} className="text-[#0A2540]" />
+                <p className="mt-4 text-sm font-semibold leading-6 text-[#0A2540]">{item}</p>
               </LiquidGlass>
             ))}
           </div>
@@ -374,7 +377,7 @@ function About() {
             href={makeWhatsappLink()}
             target="_blank"
             rel="noreferrer"
-            className="mt-10 inline-flex items-center gap-2 rounded-full bg-[#1A1428] px-7 py-4 text-sm font-semibold text-white transition hover:bg-[#2B2140]"
+            className="mt-10 inline-flex items-center gap-2 rounded-full bg-[#0A2540] px-7 py-4 text-sm font-semibold text-white transition hover:bg-[#12304D]"
           >
             Falar com Caio <MessageCircle size={18} />
           </a>
@@ -386,8 +389,8 @@ function About() {
 
 function FinalCTA() {
   return (
-    <section id="contato" className="relative overflow-hidden bg-[#1A1428] px-5 py-24 text-white">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(200,182,255,0.20),transparent_38%),linear-gradient(180deg,#1A1428_0%,#0F0B18_100%)]" />
+    <section id="contato" className="relative overflow-hidden bg-[#0A2540] px-5 py-24 text-white">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(221,231,240,0.18),transparent_38%),linear-gradient(180deg,#0A2540_0%,#061727_100%)]" />
       <div className="relative mx-auto max-w-5xl">
         <LiquidGlass className="rounded-[48px] p-8 text-center md:p-14">
           <p className="text-xs font-semibold uppercase tracking-[0.34em] text-white/42">Próximo passo</p>
@@ -402,7 +405,7 @@ function FinalCTA() {
               href={makeWhatsappLink()}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-[#F5F1EA] px-8 py-4 text-sm font-semibold text-[#1A1428] transition hover:bg-white"
+              className="inline-flex items-center gap-2 rounded-full bg-[#F7F6F2] px-8 py-4 text-sm font-semibold text-[#0A2540] transition hover:bg-white"
             >
               Iniciar atendimento <MessageCircle size={18} />
             </a>
@@ -418,9 +421,9 @@ function FinalCTA() {
 
 function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-[#0F0B18] px-5 py-16 text-white">
+    <footer className="relative overflow-hidden bg-[#061727] px-5 py-16 text-white">
       <div className="pointer-events-none absolute -left-32 top-0 h-80 w-80 rounded-full bg-[#C8B6FF]/10 blur-[110px]" />
-      <div className="pointer-events-none absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-[#F5F1EA]/8 blur-[110px]" />
+      <div className="pointer-events-none absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-[#F7F6F2]/8 blur-[110px]" />
 
       <div className="relative mx-auto max-w-7xl">
         <div className="grid gap-10 border-b border-white/10 pb-12 lg:grid-cols-[1.2fr_0.8fr_0.8fr_1fr]">
@@ -468,7 +471,7 @@ function Footer() {
               href={makeWhatsappLink()}
               target="_blank"
               rel="noreferrer"
-              className="mt-7 inline-flex items-center gap-2 rounded-full bg-[#F5F1EA] px-6 py-3 text-sm font-semibold text-[#1A1428] transition hover:bg-white"
+              className="mt-7 inline-flex items-center gap-2 rounded-full bg-[#F7F6F2] px-6 py-3 text-sm font-semibold text-[#0A2540] transition hover:bg-white"
             >
               Falar no WhatsApp <MessageCircle size={17} />
             </a>
@@ -494,7 +497,7 @@ function WhatsAppFloat() {
       href={makeWhatsappLink()}
       target="_blank"
       rel="noreferrer"
-      className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full border border-white/16 bg-[#1A1428]/76 text-white backdrop-blur-xl transition hover:bg-[#2B2140]"
+      className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full border border-white/16 bg-[#0A2540]/76 text-white backdrop-blur-xl transition hover:bg-[#12304D]"
       aria-label="Falar no WhatsApp"
     >
       <MessageCircle size={27} />
@@ -504,7 +507,7 @@ function WhatsAppFloat() {
 
 export default function App() {
   return (
-    <main className="min-h-screen bg-[#1A1428] font-sans antialiased">
+    <main className="min-h-screen bg-[#0A2540] font-sans antialiased">
       <Hero />
       <About />
       <FinalCTA />
