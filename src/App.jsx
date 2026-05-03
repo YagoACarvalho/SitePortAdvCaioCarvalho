@@ -15,9 +15,7 @@ import {
   WalletCards,
 } from "lucide-react";
 
-// Images required:
-// public/images/caio-close.png
-// public/images/caio-full.png
+
 
 const WHATSAPP_NUMBER = "5524981260178";
 const baseMessage = "Olá, Dr. Caio! Vim pelo site e gostaria de atendimento jurídico.";
