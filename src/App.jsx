@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  ArrowLeft,
+  ArrowRight,
   CheckCircle2,
   FileText,
   Home,
@@ -10,117 +10,177 @@ import {
   Scale,
   ScrollText,
   ShieldCheck,
+  Sparkles,
   Users,
   WalletCards,
 } from "lucide-react";
 
-// === DESIGN TOKENS (NEW SYSTEM) ===
-// Graphite / Sand palette + editorial typography
-const COLORS = {
-  bgDark: "#0B0B0C",
-  bgLight: "#F7F7F5",
-  sand: "#C2A878",
-  blueGray: "#8A94A6",
-  textPrimary: "#111111",
-  textSecondary: "#6B7280",
-};
+// Images required:
+// public/images/caio-close.png
+// public/images/caio-full.png
 
-// === WHATSAPP ===
 const WHATSAPP_NUMBER = "5524981260178";
 const baseMessage = "Olá, Dr. Caio! Vim pelo site e gostaria de atendimento jurídico.";
+
 function makeWhatsappLink(problemTitle = "") {
   const message = problemTitle
     ? `${baseMessage}\n\nMeu caso parece ser sobre: ${problemTitle}`
     : baseMessage;
+
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
-// === DATA ===
 const problems = [
   {
     id: "consumidor",
     icon: WalletCards,
-    label: "Problema com empresa ou produto",
-    short: "Cobrança indevida, produto com defeito, serviço mal prestado.",
+    label: "Consumidor",
+    eyebrow: "Produto, cobrança ou serviço",
+    accent: "#C8B6FF",
     title: "Direito do Consumidor",
-    diagnosis: "Situações envolvendo falha de serviço, prática abusiva ou descumprimento de oferta.",
-    rights: [
-      "Reembolso ou troca",
-      "Cancelamento de cobrança",
-      "Indenização",
-    ],
-    questions: [
-      "Você tem comprovante?",
-      "Já tentou resolver?",
-      "Houve prejuízo?",
-    ],
+    short: "Cobrança indevida, produto com defeito, negativa da empresa ou serviço mal prestado.",
+    diagnosis:
+      "Quando a empresa falha, descumpre uma oferta ou causa prejuízo, o consumidor pode buscar reparação com base nas provas disponíveis.",
+    rights: ["Reembolso, troca ou reparo", "Cancelamento de cobrança indevida", "Indenização por danos materiais ou morais"],
+    documents: ["Nota fiscal, contrato ou comprovante", "Protocolos, e-mails ou conversas", "Registros do prejuízo sofrido"],
   },
   {
     id: "contrato",
     icon: FileText,
-    label: "Contrato descumprido",
-    short: "Uma das partes não cumpriu o combinado.",
+    label: "Contratos",
+    eyebrow: "Acordos descumpridos",
+    accent: "#D9C7A7",
     title: "Responsabilidade Contratual",
-    diagnosis: "Quando há contrato e descumprimento, pode haver obrigação de reparar.",
-    rights: ["Cumprimento", "Rescisão", "Indenização"],
-    questions: ["Existe contrato?", "Qual falha ocorreu?"],
+    short: "Uma das partes não cumpriu aquilo que estava combinado.",
+    diagnosis:
+      "Quando há contrato válido e descumprimento, o caminho pode envolver cumprimento da obrigação, rescisão ou reparação financeira.",
+    rights: ["Cumprimento da obrigação", "Rescisão contratual", "Reparação por prejuízos"],
+    documents: ["Contrato assinado", "Comprovantes de pagamento", "Mensagens, e-mails ou notificações"],
   },
   {
     id: "imovel",
     icon: Home,
-    label: "Imóvel irregular",
-    short: "Sem escritura ou documentação incompleta.",
+    label: "Imóveis",
+    eyebrow: "Posse e regularização",
+    accent: "#BFD8C2",
     title: "Regularização de Imóveis",
-    diagnosis: "Regularização da posse para garantir segurança jurídica.",
-    rights: ["Usucapião", "Regularização"],
-    questions: ["Há quanto tempo ocupa?", "Tem documentos?"],
+    short: "Imóvel sem escritura, posse antiga ou documentação incompleta.",
+    diagnosis:
+      "A regularização busca transformar uma posse insegura em uma situação juridicamente protegida, seja por REURB, usucapião judicial ou extrajudicial.",
+    rights: ["Análise de usucapião", "Regularização fundiária", "Caminho para escritura definitiva"],
+    documents: ["Contas antigas do imóvel", "Contratos, recibos e fotos", "Histórico da posse"],
   },
   {
     id: "inventario",
     icon: ScrollText,
     label: "Inventário",
+    eyebrow: "Bens e herdeiros",
+    accent: "#E8C7A1",
+    title: "Inventários",
     short: "Transferência de bens após falecimento.",
-    title: "Inventário",
-    diagnosis: "Formalização da partilha entre herdeiros.",
-    rights: ["Inventário cartório", "Inventário judicial"],
-    questions: ["Há acordo?", "Existem bens?"],
+    diagnosis:
+      "O inventário formaliza a transferência de bens e direitos aos herdeiros. Em alguns casos, é possível resolver de forma extrajudicial, diretamente em cartório.",
+    rights: ["Inventário em cartório", "Inventário judicial", "Partilha de bens"],
+    documents: ["Certidão de óbito", "Documentos dos herdeiros", "Relação de bens e dívidas"],
   },
   {
     id: "divorcio",
     icon: Users,
-    label: "Divórcio",
-    short: "Separação e divisão de bens.",
+    label: "Família",
+    eyebrow: "Divórcio e partilha",
+    accent: "#E6B8C8",
     title: "Divórcio e Partilha",
-    diagnosis: "Dissolução do vínculo com análise patrimonial.",
-    rights: ["Divórcio", "Partilha"],
-    questions: ["Há acordo?", "Tem filhos?"],
+    short: "Separação, patrimônio e organização familiar.",
+    diagnosis:
+      "O divórcio pode ser consensual ou litigioso. A definição do caminho depende do regime de bens, existência de filhos menores e acordo entre as partes.",
+    rights: ["Divórcio em cartório, quando possível", "Partilha de bens", "Orientação em casos com filhos menores"],
+    documents: ["Certidão de casamento atualizada", "Documentos dos cônjuges", "Relação de bens"],
   },
   {
     id: "bpc",
     icon: ShieldCheck,
     label: "BPC/LOAS",
-    short: "Benefício assistencial.",
-    title: "Benefício Assistencial",
-    diagnosis: "Auxílio para quem não pode prover sustento.",
-    rights: ["Solicitação", "Revisão"],
-    questions: ["Idade ou deficiência?", "CadÚnico atualizado?"],
+    eyebrow: "Benefício assistencial",
+    accent: "#C7C6E8",
+    title: "BPC/LOAS",
+    short: "Benefício para idoso ou pessoa com deficiência.",
+    diagnosis:
+      "Benefício assistencial de um salário mínimo destinado a idosos ou pessoas com deficiência que não possuem meios de prover a própria manutenção.",
+    rights: ["Pedido administrativo", "Revisão de negativa", "Organização documental"],
+    documents: ["CadÚnico atualizado", "Laudos e exames, quando houver", "Documentos do grupo familiar"],
   },
 ];
 
-// === COMPONENTS ===
+function LiquidGlass({ children, className = "", light = false }) {
+  return (
+    <div
+      className={`relative overflow-hidden border backdrop-blur-2xl ${
+        light
+          ? "border-white/70 bg-white/45"
+          : "border-white/16 bg-white/[0.075]"
+      } ${className}`}
+    >
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/55 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.20),rgba(255,255,255,0.03)_42%,rgba(255,255,255,0.10))]" />
+      <div className="relative">{children}</div>
+    </div>
+  );
+}
+
+function Header() {
+  return (
+    <header className="fixed left-0 top-0 z-50 w-full px-4 py-4">
+      <div className="mx-auto max-w-7xl rounded-full border border-white/14 bg-[#1A1428]/68 px-5 py-3 backdrop-blur-2xl">
+        <div className="flex items-center justify-between gap-5">
+          <a href="#inicio">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.34em] text-white">Caio Carvalho</p>
+            <p className="mt-1 text-[11px] text-white/48">Advogado • OAB/RJ 262212</p>
+          </a>
+
+          <nav className="hidden items-center gap-7 md:flex">
+            <a href="#atuacao" className="text-sm text-white/55 hover:text-white">Atuação</a>
+            <a href="#sobre" className="text-sm text-white/55 hover:text-white">Sobre</a>
+            <a href="#contato" className="text-sm text-white/55 hover:text-white">Contato</a>
+          </nav>
+
+          <a
+            href={makeWhatsappLink()}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-full bg-[#F5F1EA] px-5 py-2.5 text-sm font-semibold text-[#1A1428] transition hover:bg-white"
+          >
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </header>
+  );
+}
 
 function ProblemButton({ problem, active, onClick }) {
   const Icon = problem.icon;
+
   return (
     <button
       onClick={onClick}
-      className={`text-left py-4 transition ${
-        active ? "text-black" : "text-gray-400"
+      className={`group rounded-[28px] border p-5 text-left backdrop-blur-2xl transition duration-300 ${
+        active
+          ? "border-white/30 bg-[#F5F1EA] text-[#1A1428]"
+          : "border-white/12 bg-white/[0.065] text-white hover:bg-white/[0.105]"
       }`}
     >
-      <div className="flex items-center gap-3">
-        <Icon size={20} />
-        <span className="font-medium">{problem.label}</span>
+      <div className="flex items-start gap-4">
+        <span
+          style={{ backgroundColor: active ? problem.accent : "rgba(255,255,255,0.10)" }}
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl"
+        >
+          <Icon size={21} />
+        </span>
+        <div>
+          <p className={`text-[10px] font-semibold uppercase tracking-[0.22em] ${active ? "text-[#1A1428]/50" : "text-white/38"}`}>{problem.eyebrow}</p>
+          <p className="mt-2 text-lg font-semibold tracking-tight">{problem.label}</p>
+          <p className={`mt-2 text-sm leading-6 ${active ? "text-[#1A1428]/66" : "text-white/50"}`}>{problem.short}</p>
+        </div>
       </div>
     </button>
   );
@@ -131,69 +191,226 @@ function ConsultationPanel({ problem }) {
     <AnimatePresence mode="wait">
       <motion.div
         key={problem.id}
-        initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
+        initial={{ opacity: 0, y: 18, filter: "blur(10px)" }}
         animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        exit={{ opacity: 0, y: -20, filter: "blur(6px)" }}
-        transition={{ duration: 0.4 }}
-        className="max-w-xl"
+        exit={{ opacity: 0, y: -14, filter: "blur(10px)" }}
+        transition={{ duration: 0.42 }}
       >
-        <h2 className="text-4xl font-serif">{problem.title}</h2>
-        <p className="mt-4 text-gray-500">{problem.diagnosis}</p>
+        <LiquidGlass className="rounded-[42px] p-6 md:p-8">
+          <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-white/14 bg-white/[0.07] px-4 py-2 text-xs font-semibold text-white/70 backdrop-blur-xl">
+            <Sparkles size={15} style={{ color: problem.accent }} /> análise inicial
+          </div>
 
-        <div className="mt-8 space-y-3">
-          {problem.rights.map((r) => (
-            <p key={r} className="flex items-center gap-2 text-sm">
-              <CheckCircle2 size={16} /> {r}
-            </p>
-          ))}
-        </div>
+          <h2 className="max-w-xl font-serif text-4xl leading-tight text-white md:text-5xl">{problem.title}</h2>
+          <p className="mt-5 max-w-2xl text-base leading-8 text-white/62">{problem.diagnosis}</p>
 
-        <div className="mt-8 space-y-2">
-          {problem.questions.map((q) => (
-            <p key={q} className="text-sm text-gray-600">→ {q}</p>
-          ))}
-        </div>
+          <div className="mt-8 grid gap-5 md:grid-cols-2">
+            <div className="rounded-[28px] border border-white/10 bg-white/[0.06] p-5 backdrop-blur-xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/38">Pode envolver</p>
+              <div className="mt-4 space-y-3">
+                {problem.rights.map((item) => (
+                  <p key={item} className="flex gap-3 text-sm leading-6 text-white/72">
+                    <CheckCircle2 size={17} style={{ color: problem.accent }} className="mt-0.5 shrink-0" /> {item}
+                  </p>
+                ))}
+              </div>
+            </div>
 
-        <a
-          href={makeWhatsappLink(problem.title)}
-          target="_blank"
-          className="mt-8 inline-block text-sm underline"
-        >
-          Start your case →
-        </a>
+            <div className="rounded-[28px] border border-white/10 bg-white/[0.06] p-5 backdrop-blur-xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/38">Primeiros documentos</p>
+              <div className="mt-4 space-y-3">
+                {problem.documents.map((item) => (
+                  <p key={item} className="flex gap-3 text-sm leading-6 text-white/72">
+                    <FileText size={17} style={{ color: problem.accent }} className="mt-0.5 shrink-0" /> {item}
+                  </p>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a
+              href={makeWhatsappLink(problem.title)}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#F5F1EA] px-6 py-4 text-sm font-semibold text-[#1A1428] transition hover:bg-white"
+            >
+              Iniciar análise <MessageCircle size={18} />
+            </a>
+            <a
+              href="#sobre"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/14 bg-white/[0.055] px-6 py-4 text-sm font-semibold text-white/75 transition hover:bg-white/[0.095]"
+            >
+              Conhecer o advogado <ArrowRight size={18} />
+            </a>
+          </div>
+        </LiquidGlass>
       </motion.div>
     </AnimatePresence>
   );
 }
 
 function Hero() {
-  const [selected, setSelected] = useState(problems[0].id);
+  const [selected, setSelected] = useState("consumidor");
   const problem = useMemo(() => problems.find((p) => p.id === selected), [selected]);
 
   return (
-    <section className="min-h-screen bg-[#F7F7F5] px-6 py-16 text-black">
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16">
+    <section id="inicio" className="relative min-h-screen overflow-hidden bg-[#1A1428] px-5 pt-28 text-white">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_22%_8%,rgba(200,182,255,0.22),transparent_34%),radial-gradient(circle_at_80%_22%,rgba(245,241,234,0.12),transparent_32%),linear-gradient(180deg,#1A1428_0%,#241C36_68%,#1A1428_100%)]" />
+      <div className="pointer-events-none absolute left-1/2 top-28 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-white/[0.055] blur-[120px]" />
 
-        <div>
-          <p className="text-xs uppercase tracking-widest text-gray-400">Legal clarity</p>
+      <Header />
 
-          <h1 className="text-5xl font-serif mt-4 leading-tight">
-            Understand your situation before taking action.
+      <div className="relative mx-auto max-w-7xl pb-24 pt-12">
+        <motion.div
+          initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 0.7 }}
+          className="mx-auto max-w-5xl text-center"
+        >
+          <div className="mx-auto mb-7 inline-flex items-center gap-2 rounded-full border border-white/14 bg-white/[0.07] px-4 py-2 text-xs font-medium text-white/58 backdrop-blur-xl">
+            <Scale size={15} /> atendimento jurídico direto
+          </div>
+          <h1 className="mx-auto max-w-5xl font-serif text-5xl leading-[1.02] tracking-tight md:text-7xl lg:text-8xl">
+            Entenda seu caso antes de tomar uma decisão.
           </h1>
+          <p className="mx-auto mt-7 max-w-2xl text-lg leading-8 text-white/60">
+            Uma experiência inicial para organizar o problema, identificar documentos importantes e dar o próximo passo com segurança.
+          </p>
+        </motion.div>
 
-          <div className="mt-10 space-y-2">
-            {problems.map((p) => (
-              <ProblemButton
-                key={p.id}
-                problem={p}
-                active={selected === p.id}
-                onClick={() => setSelected(p.id)}
-              />
+        <div className="mt-16 grid gap-6 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+          <div id="atuacao" className="grid gap-3 sm:grid-cols-2 lg:sticky lg:top-28 lg:grid-cols-1">
+            {problems.map((item) => (
+              <ProblemButton key={item.id} problem={item} active={selected === item.id} onClick={() => setSelected(item.id)} />
             ))}
           </div>
-        </div>
 
-        <ConsultationPanel problem={problem} />
+          <div className="grid gap-6">
+            {problem && <ConsultationPanel problem={problem} />}
+
+            <div className="grid gap-6 md:grid-cols-[0.9fr_1.1fr]">
+              <LiquidGlass className="rounded-[38px] p-2">
+                <img
+                  src="/images/caio-close.png"
+                  alt="Caio Carvalho dos Santos"
+                  className="h-[390px] w-full rounded-[32px] object-cover object-center grayscale-[4%] contrast-105 saturate-[0.94]"
+                />
+              </LiquidGlass>
+
+              <LiquidGlass className="rounded-[38px] p-7">
+                <div className="mb-12 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/12 text-white">
+                  <Scale size={22} />
+                </div>
+                <p className="font-serif text-3xl leading-tight text-white">Caio Carvalho dos Santos</p>
+                <p className="mt-3 text-sm font-medium text-white/48">Advogado • OAB/RJ 262212</p>
+                <p className="mt-6 text-base leading-8 text-white/62">
+                  Atendimento com clareza, estratégia e linguagem simples para orientar decisões jurídicas reais.
+                </p>
+              </LiquidGlass>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function About() {
+  return (
+    <section id="sobre" className="relative overflow-hidden bg-[#F5F1EA] px-5 py-24 text-[#1A1428]">
+      <div className="pointer-events-none absolute -left-32 top-20 h-96 w-96 rounded-full bg-[#D8CCFF]/45 blur-[110px]" />
+      <div className="pointer-events-none absolute -right-32 bottom-20 h-96 w-96 rounded-full bg-white/80 blur-[110px]" />
+
+      <div className="relative mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.55 }}
+        >
+          <LiquidGlass light className="rounded-[44px] p-2">
+            <img
+              src="/images/caio-full.png"
+              alt="Advogado Caio Carvalho em ambiente institucional"
+              className="h-[680px] w-full rounded-[38px] object-cover object-top grayscale-[4%] contrast-105 saturate-[0.94]"
+            />
+          </LiquidGlass>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.55, delay: 0.1 }}
+        >
+          <p className="text-xs font-semibold uppercase tracking-[0.34em] text-[#7A6F8E]">Quem analisa seu caso</p>
+          <h2 className="mt-5 max-w-3xl font-serif text-5xl leading-tight tracking-tight md:text-7xl">
+            Direto com o advogado. Sem juridiquês.
+          </h2>
+          <div className="mt-8 max-w-2xl space-y-5 text-lg leading-8 text-[#5F566D]">
+            <p>
+              Caio Carvalho dos Santos é advogado inscrito na OAB/RJ sob nº 262212 e atua com foco em soluções jurídicas claras, acessíveis e estratégicas.
+            </p>
+            <p>
+              O objetivo é transformar uma situação confusa em um caminho compreensível: quais documentos reunir, quais riscos observar e qual medida faz sentido para o caso.
+            </p>
+          </div>
+
+          <div className="mt-10 grid gap-4 sm:grid-cols-3">
+            {[
+              "Clareza na orientação",
+              "Análise individual",
+              "Atendimento direto",
+            ].map((item) => (
+              <LiquidGlass light key={item} className="rounded-[28px] p-5">
+                <CheckCircle2 size={20} className="text-[#6D5DFC]" />
+                <p className="mt-4 text-sm font-semibold leading-6 text-[#1A1428]">{item}</p>
+              </LiquidGlass>
+            ))}
+          </div>
+
+          <a
+            href={makeWhatsappLink()}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-10 inline-flex items-center gap-2 rounded-full bg-[#1A1428] px-7 py-4 text-sm font-semibold text-white transition hover:bg-[#2B2140]"
+          >
+            Falar com Caio <MessageCircle size={18} />
+          </a>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function FinalCTA() {
+  return (
+    <section id="contato" className="relative overflow-hidden bg-[#1A1428] px-5 py-24 text-white">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(200,182,255,0.20),transparent_38%),linear-gradient(180deg,#1A1428_0%,#0F0B18_100%)]" />
+      <div className="relative mx-auto max-w-5xl">
+        <LiquidGlass className="rounded-[48px] p-8 text-center md:p-14">
+          <p className="text-xs font-semibold uppercase tracking-[0.34em] text-white/42">Próximo passo</p>
+          <h2 className="mx-auto mt-5 max-w-4xl font-serif text-5xl leading-tight tracking-tight md:text-7xl">
+            Seu caso precisa de direção, não de dúvida.
+          </h2>
+          <p className="mx-auto mt-7 max-w-2xl text-lg leading-8 text-white/60">
+            Envie uma mensagem com um resumo da situação e os documentos que você já possui.
+          </p>
+          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <a
+              href={makeWhatsappLink()}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-[#F5F1EA] px-8 py-4 text-sm font-semibold text-[#1A1428] transition hover:bg-white"
+            >
+              Iniciar atendimento <MessageCircle size={18} />
+            </a>
+            <span className="inline-flex items-center gap-2 text-sm text-white/52">
+              <Phone size={17} /> (24) 98126-0178
+            </span>
+          </div>
+        </LiquidGlass>
       </div>
     </section>
   );
@@ -201,23 +418,98 @@ function Hero() {
 
 function Footer() {
   return (
-    <footer className="px-6 py-10 text-sm text-gray-400">
-      <div className="max-w-6xl mx-auto flex justify-between">
-        <div>
-          <p className="text-black font-semibold">Caio Carvalho</p>
-          <p>OAB/RJ 262212</p>
+    <footer className="relative overflow-hidden bg-[#0F0B18] px-5 py-16 text-white">
+      <div className="pointer-events-none absolute -left-32 top-0 h-80 w-80 rounded-full bg-[#C8B6FF]/10 blur-[110px]" />
+      <div className="pointer-events-none absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-[#F5F1EA]/8 blur-[110px]" />
+
+      <div className="relative mx-auto max-w-7xl">
+        <div className="grid gap-10 border-b border-white/10 pb-12 lg:grid-cols-[1.2fr_0.8fr_0.8fr_1fr]">
+          <div>
+            <p className="font-serif text-3xl leading-tight text-white">Caio Carvalho dos Santos</p>
+            <p className="mt-3 text-sm font-medium text-white/52">Advogado • OAB/RJ 262212</p>
+            <p className="mt-5 max-w-sm text-sm leading-7 text-white/48">
+              Atendimento jurídico direto, com clareza e estratégia para orientar decisões em casos cíveis, familiares, imobiliários e assistenciais.
+            </p>
+          </div>
+
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-white/36">Navegação</p>
+            <div className="mt-5 space-y-3 text-sm">
+              <a href="#inicio" className="block text-white/56 transition hover:text-white">Início</a>
+              <a href="#atuacao" className="block text-white/56 transition hover:text-white">Áreas de atuação</a>
+              <a href="#sobre" className="block text-white/56 transition hover:text-white">Sobre o advogado</a>
+              <a href="#contato" className="block text-white/56 transition hover:text-white">Contato</a>
+            </div>
+          </div>
+
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-white/36">Atuação</p>
+            <div className="mt-5 space-y-3 text-sm">
+              <p className="text-white/56">Consumidor</p>
+              <p className="text-white/56">Contratos</p>
+              <p className="text-white/56">Imóveis</p>
+              <p className="text-white/56">Família e inventário</p>
+              <p className="text-white/56">BPC/LOAS</p>
+            </div>
+          </div>
+
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-white/36">Contato</p>
+            <div className="mt-5 space-y-4 text-sm text-white/56">
+              <p className="flex items-center gap-3">
+                <Phone size={17} className="text-[#C8B6FF]" /> (24) 98126-0178
+              </p>
+              <p className="flex items-center gap-3">
+                <Scale size={17} className="text-[#C8B6FF]" /> OAB/RJ 262212
+              </p>
+            </div>
+
+            <a
+              href={makeWhatsappLink()}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-7 inline-flex items-center gap-2 rounded-full bg-[#F5F1EA] px-6 py-3 text-sm font-semibold text-[#1A1428] transition hover:bg-white"
+            >
+              Falar no WhatsApp <MessageCircle size={17} />
+            </a>
+          </div>
         </div>
-        <p>Informational only.</p>
+
+        <div className="flex flex-col gap-4 pt-8 md:flex-row md:items-center md:justify-between">
+          <p className="max-w-3xl text-xs leading-6 text-white/38">
+            As informações deste site possuem caráter exclusivamente informativo e não substituem a análise individual do caso por profissional habilitado. O envio de mensagem não implica contratação automática de serviços advocatícios.
+          </p>
+          <p className="text-xs text-white/32 md:text-right">
+            © 2026 Caio Carvalho dos Santos. Todos os direitos reservados.
+          </p>
+        </div>
       </div>
     </footer>
   );
 }
 
+function WhatsAppFloat() {
+  return (
+    <a
+      href={makeWhatsappLink()}
+      target="_blank"
+      rel="noreferrer"
+      className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full border border-white/16 bg-[#1A1428]/76 text-white backdrop-blur-xl transition hover:bg-[#2B2140]"
+      aria-label="Falar no WhatsApp"
+    >
+      <MessageCircle size={27} />
+    </a>
+  );
+}
+
 export default function App() {
   return (
-    <main className="font-sans">
+    <main className="min-h-screen bg-[#1A1428] font-sans antialiased">
       <Hero />
+      <About />
+      <FinalCTA />
       <Footer />
+      <WhatsAppFloat />
     </main>
   );
 }

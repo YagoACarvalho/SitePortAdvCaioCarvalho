@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+body {
+  background: #F7F7F5;
+  color: #111111;
+}
+
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', serif;
+}
+
+p, button, a {
+  font-family: 'Inter', sans-serif;
+}
+
+
+img {
+  filter: contrast(1.05) saturate(0.95);
+}
